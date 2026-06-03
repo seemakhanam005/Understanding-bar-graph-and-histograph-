@@ -376,7 +376,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // SVG Dimensions
         const width = containerWidth;
         const height = containerHeight;
-        const padding = { top: 30, right: 30, bottom: 50, left: 55 };
+        const isMobile = containerWidth < 480;
+        const bottomPad = isMobile ? 72 : 50;
+        const padding = { top: 30, right: 30, bottom: bottomPad, left: 55 };
 
         // Core data variables
         const maxVal = Math.max(...state.chartData.map(d => d.value), 10);
@@ -567,18 +569,24 @@ document.addEventListener('DOMContentLoaded', () => {
             xLabel.setAttribute('x', labelX);
             xLabel.setAttribute('y', labelY);
             xLabel.setAttribute('class', 'chart-label');
-            xLabel.setAttribute('text-anchor', 'middle');
-            
+
             let labelText = d.label;
-            if (state.dataType === 'discrete' && labelText.length > 12) {
-                labelText = labelText.substring(0, 10) + '..';
+            // Aggressively truncate on mobile
+            const maxChars = isMobile ? 6 : 12;
+            if (state.dataType === 'discrete' && labelText.length > maxChars) {
+                labelText = labelText.substring(0, maxChars - 2) + '..';
             }
             xLabel.textContent = labelText;
-            
-            // Rotate labels slightly if they are cramped
-            if (itemCount > 8 || state.dataType === 'continuous') {
-                xLabel.setAttribute('transform', `rotate(-15, ${labelX}, ${labelY})`);
-                xLabel.setAttribute('y', labelY + 3);
+
+            // Always rotate on mobile; rotate on desktop only when many bars or continuous
+            const shouldRotate = isMobile || itemCount > 6 || state.dataType === 'continuous';
+            if (shouldRotate) {
+                const angle = isMobile ? -45 : -15;
+                xLabel.setAttribute('transform', `rotate(${angle}, ${labelX}, ${labelY})`);
+                xLabel.setAttribute('text-anchor', 'end');
+                xLabel.setAttribute('y', labelY + (isMobile ? 4 : 3));
+            } else {
+                xLabel.setAttribute('text-anchor', 'middle');
             }
 
             svg.appendChild(xLabel);
