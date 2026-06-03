@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar Graph vs. Histogram in Machine Learning: Interactive Guide</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Master the difference between Bar Graphs and Histograms. Explore interactive datasets, adjust bin counts dynamically, and learn their roles in data science and ML pipelines.">
+    <meta name="keywords" content="bar graph, histogram, machine learning, data science, feature engineering, residuals, class imbalance, data visualization, bins">
+    <link rel="canonical" href="https://dataviz.ml/bar-vs-histogram">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dataviz.ml/bar-vs-histogram">
+    <meta property="og:title" content="Bar Graph vs. Histogram in Machine Learning: Interactive Guide">
+    <meta property="og:description" content="Master the difference between Bar Graphs and Histograms. Explore interactive datasets, adjust bin counts dynamically, and learn their roles in data science and ML pipelines.">
+    <meta property="og:image" content="https://dataviz.ml/assets/preview.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://dataviz.ml/bar-vs-histogram">
+    <meta name="twitter:title" content="Bar Graph vs. Histogram in Machine Learning: Interactive Guide">
+    <meta name="twitter:description" content="Master the difference between Bar Graphs and Histograms. Explore interactive datasets, adjust bin counts dynamically, and learn their roles in data science and ML pipelines.">
+    <meta name="twitter:image" content="https://dataviz.ml/assets/preview.png">
+
+    <!-- JSON-LD Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "Bar Graph vs. Histogram in Machine Learning: Interactive Guide",
+      "description": "An interactive comparison between Bar Graphs and Histograms, explaining their key differences and critical applications in feature engineering, residuals, and class imbalance in data science and ML.",
+      "genre": "Data Science & Machine Learning Education",
+      "keywords": "bar graph, histogram, machine learning, data science, feature engineering, residuals, class imbalance, bins, data visualization",
+      "inLanguage": "en",
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Data Scientists, Machine Learning Engineers, Students"
+      },
+      "educationalUse": "Interactive Learning Tool, Concept Guide",
+      "learningResourceType": "Tutorial",
+      "isAccessibleForFree": "True"
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background glow elements for rich aesthetic -->
+    <div class="glow-bg">
+        <div class="glow-sphere glow-sphere-1"></div>
+        <div class="glow-sphere glow-sphere-2"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo" id="logoLink">
+                <span class="logo-icon"><i class="fa-solid fa-chart-simple"></i></span>
+                <span class="logo-text">DataViz<span class="highlight">.ML</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="#comparison" class="nav-item" id="navCompare">Compare</a>
+                <a href="#playground" class="nav-item" id="navPlayground">Playground</a>
+                <a href="#machine-learning" class="nav-item" id="navML">ML Applications</a>
+                <a href="#quiz-section" class="nav-item btn-cta" id="navQuiz">Take Quiz</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="content-wrapper">
+        <!-- Hero Section -->
+        <section class="hero-section" id="hero">
+            <div class="hero-content">
+                <span class="badge" id="heroBadge">Data Science Fundamentals</span>
+                <h1 id="mainTitle">Understanding <span class="text-grad-bar">Bar Graphs</span> vs. <span class="text-grad-hist">Histograms</span> in Machine Learning</h1>
+                <p class="hero-description" id="heroDesc">
+                    Master the difference between bar graphs and histograms in machine learning and data science. Learn when to use each for feature engineering, class imbalance detection, and model error diagnostics.
+                </p>
+                <div class="hero-actions">
+                    <a href="#playground" class="btn btn-primary" id="btnExplore">Interactive Playground</a>
+                    <a href="#comparison" class="btn btn-secondary" id="btnLearnDiff">Learn Differences</a>
+                </div>
+            </div>
+
+            <!-- Hand-drawn style vs modern visual cards in hero -->
+            <div class="hero-visual" id="heroVisual">
+                <div class="card visual-card" id="cardHistogram">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-chart-area text-hist"></i> Histogram</span>
+                        <span class="card-badge bg-hist-dim">Continuous Data</span>
+                    </div>
+                    <div class="card-body">
+                        <!-- Hand-drawn yellow bar concept SVG -->
+                        <div class="mini-chart-container">
+                            <svg class="hand-drawn-svg" viewBox="0 0 200 120" id="svgHeroHist" role="img" aria-labelledby="svgHeroHistTitle svgHeroHistDesc">
+                                <title id="svgHeroHistTitle">Histogram Concept Chart</title>
+                                <desc id="svgHeroHistDesc">An educational diagram showing adjacent yellow bars over a continuous interval from 0 to 50, pointing to the bins without any spaces between them.</desc>
+                                <line x1="25" y1="10" x2="25" y2="105" stroke="var(--text-secondary)" stroke-width="1.5" />
+                                <line x1="25" y1="105" x2="190" y2="105" stroke="var(--text-secondary)" stroke-width="1.5" />
+                                <!-- Handdrawn bars (adjacent, yellow) -->
+                                <rect x="25" y="65" width="30" height="40" class="bar-hist-hand" />
+                                <rect x="55" y="35" width="30" height="70" class="bar-hist-hand" />
+                                <rect x="85" y="20" width="30" height="85" class="bar-hist-hand" />
+                                <rect x="115" y="45" width="30" height="60" class="bar-hist-hand" />
+                                <rect x="145" y="75" width="30" height="30" class="bar-hist-hand" />
+                                <!-- Interval markers -->
+                                <text x="25" y="115" class="svg-label">0</text>
+                                <text x="55" y="115" class="svg-label">10</text>
+                                <text x="85" y="115" class="svg-label">20</text>
+                                <text x="115" y="115" class="svg-label">30</text>
+                                <text x="145" y="115" class="svg-label">40</text>
+                                <text x="175" y="115" class="svg-label">50</text>
+                                <!-- Arrow pointing to Bins -->
+                                <path d="M 125,18 Q 115,22 100,38" fill="none" stroke="var(--color-hist)" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrow)" />
+                                <text x="128" y="16" class="svg-annotation text-hist">Bins (No Gaps)</text>
+                                <!-- Arrow marker -->
+                                <defs>
+                                    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-hist)" />
+                                    </marker>
+                                </defs>
+                            </svg>
+                        </div>
+                        <p class="card-caption">Groups continuous numbers into <strong>intervals (bins)</strong>. No spaces between bars.</p>
+                    </div>
+                </div>
+
+                <div class="card visual-card" id="cardBarGraph">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-chart-bar text-bar"></i> Bar Graph</span>
+                        <span class="card-badge bg-bar-dim">Discrete Data</span>
+                    </div>
+                    <div class="card-body">
+                        <!-- Hand-drawn pink bar concept SVG -->
+                        <div class="mini-chart-container">
+                            <svg class="hand-drawn-svg" viewBox="0 0 200 120" id="svgHeroBar" role="img" aria-labelledby="svgHeroBarTitle svgHeroBarDesc">
+                                <title id="svgHeroBarTitle">Bar Graph Concept Chart</title>
+                                <desc id="svgHeroBarDesc">An educational diagram showing spaced pink bars representing independent categories A, B, C, and D with spaces between them.</desc>
+                                <line x1="25" y1="10" x2="25" y2="105" stroke="var(--text-secondary)" stroke-width="1.5" />
+                                <line x1="25" y1="105" x2="190" y2="105" stroke="var(--text-secondary)" stroke-width="1.5" />
+                                <!-- Spaced bars (pink) -->
+                                <rect x="35" y="55" width="22" height="50" class="bar-bar-hand" />
+                                <rect x="70" y="25" width="22" height="80" class="bar-bar-hand" />
+                                <rect x="105" y="45" width="22" height="60" class="bar-bar-hand" />
+                                <rect x="140" y="65" width="22" height="40" class="bar-bar-hand" />
+                                <!-- Category labels -->
+                                <text x="46" y="115" class="svg-label" text-anchor="middle">A</text>
+                                <text x="81" y="115" class="svg-label" text-anchor="middle">B</text>
+                                <text x="116" y="115" class="svg-label" text-anchor="middle">C</text>
+                                <text x="151" y="115" class="svg-label" text-anchor="middle">D</text>
+
+                            </svg>
+                        </div>
+                        <p class="card-caption">Compares individual <strong>discrete categories</strong>. Distinct gaps between bars represent independence.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Comparison Section -->
+        <section class="comparison-section section-padding" id="comparison">
+            <div class="section-header">
+                <span class="section-tag" id="compareTag">Deep Dive</span>
+                <h2 class="section-title" id="compareTitle">How to Tell Them Apart</h2>
+                <p class="section-subtitle" id="compareSubtitle">Use this structured comparison to identify which visual tool to select for your datasets.</p>
+            </div>
+
+            <div class="grid-comparison">
+                <!-- Data Types -->
+                <div class="comparison-card">
+                    <div class="comp-icon bg-blue-glow"><i class="fa-solid fa-database"></i></div>
+                    <h3>Data Type</h3>
+                    <div class="comp-detail">
+                        <div class="comp-item">
+                            <span class="comp-label bar-label">Bar Graph</span>
+                            <p><strong>Discrete / Categorical:</strong> Grouped by names, labels, colors, or categories (e.g., Apple, Banana; True, False; Low, Medium, High).</p>
+                        </div>
+                        <div class="comp-divider"></div>
+                        <div class="comp-item">
+                            <span class="comp-label hist-label">Histogram</span>
+                            <p><strong>Continuous / Quantitative:</strong> Real numbers, measurements, or ranges (e.g., Temperature, Height, Income, Age, Error rates).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- X-Axis Representation -->
+                <div class="comparison-card">
+                    <div class="comp-icon bg-pink-glow"><i class="fa-solid fa-arrows-left-right"></i></div>
+                    <h3>X-Axis Meaning</h3>
+                    <div class="comp-detail">
+                        <div class="comp-item">
+                            <span class="comp-label bar-label">Bar Graph</span>
+                            <p>Represents **distinct categories**. The bars can be rearranged in any order (alphabetical, size-based) without altering the data's logic.</p>
+                        </div>
+                        <div class="comp-divider"></div>
+                        <div class="comp-item">
+                            <span class="comp-label hist-label">Histogram</span>
+                            <p>Represents **intervals (bins)** on a continuous scale. The order is fixed chronologically/numerically (e.g. 0-10 must go before 10-20).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spacing & Layout -->
+                <div class="comparison-card">
+                    <div class="comp-icon bg-yellow-glow"><i class="fa-solid fa-grip-lines-vertical"></i></div>
+                    <h3>Spacing Between Bars</h3>
+                    <div class="comp-detail">
+                        <div class="comp-item">
+                            <span class="comp-label bar-label">Bar Graph</span>
+                            <p>**Spaces are required.** Gaps exist to explicitly show that each category is discrete and independent of the other.</p>
+                        </div>
+                        <div class="comp-divider"></div>
+                        <div class="comp-item">
+                            <span class="comp-label hist-label">Histogram</span>
+                            <p>**No spaces between bars.** The bars touch to represent the continuous nature of the dataset's numerical range.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bar Width Meaning -->
+                <div class="comparison-card">
+                    <div class="comp-icon bg-green-glow"><i class="fa-solid fa-arrows-up-down-left-right"></i></div>
+                    <h3>Width of the Bars</h3>
+                    <div class="comp-detail">
+                        <div class="comp-item">
+                            <span class="comp-label bar-label">Bar Graph</span>
+                            <p>The width of each bar is **arbitrary and uniform**. It carries no mathematical information, only height matters.</p>
+                        </div>
+                        <div class="comp-divider"></div>
+                        <div class="comp-item">
+                            <span class="comp-label hist-label">Histogram</span>
+                            <p>The width represents the **size of the interval (bin width)**. It carries mathematical significance (often equal width, but can vary).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Playground Section -->
+        <section class="playground-section section-padding" id="playground">
+            <div class="section-header">
+                <span class="section-tag" id="playTag">Interactive Lab</span>
+                <h2 class="section-title" id="playTitle">Data Playground</h2>
+                <p class="section-subtitle" id="playSubtitle">Generate raw data and watch it render instantly. Toggle between discrete categories and continuous intervals to see the visual changes.</p>
+            </div>
+
+            <div class="playground-layout">
+                <!-- Sidebar Controls -->
+                <div class="playground-controls card">
+                    <h3>Configure Dataset</h3>
+                    <p class="controls-intro">Choose a dataset style to see how the rendering engine adapts.</p>
+                    
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" id="btnSelectDiscrete" data-type="discrete">
+                            <i class="fa-solid fa-chart-bar"></i> Discrete Data
+                        </button>
+                        <button class="toggle-btn" id="btnSelectContinuous" data-type="continuous">
+                            <i class="fa-solid fa-chart-area"></i> Continuous Data
+                        </button>
+                    </div>
+
+                    <!-- Dataset Selection Dropdown -->
+                    <div class="control-field">
+                        <label for="selectDataset"><i class="fa-solid fa-table"></i> Choose Dataset:</label>
+                        <select id="selectDataset" class="select-dropdown">
+                            <!-- Options populated dynamically by script.js -->
+                        </select>
+                    </div>
+
+                    <!-- Histogram Bins Config (Hidden for Discrete) -->
+                    <div class="control-field" id="binControlContainer" style="display: none;">
+                        <div class="slider-header">
+                            <label for="inputBins"><i class="fa-solid fa-sliders"></i> Histogram Bins:</label>
+                            <span class="slider-value" id="binCountDisplay">8</span>
+                        </div>
+                        <input type="range" id="inputBins" min="4" max="20" value="8" class="custom-slider">
+                        <p class="slider-help">Changing the bin count groups values into wider or narrower ranges, altering the histogram shape.</p>
+                    </div>
+
+                    <!-- Dataset Metadata -->
+                    <div class="dataset-info">
+                        <h4><i class="fa-solid fa-circle-info"></i> Dataset Information</h4>
+                        <p id="txtDatasetDesc">Loading dataset description...</p>
+                        <div class="data-preview">
+                            <div class="preview-header">
+                                <span>Raw Data Sample (first 10 elements):</span>
+                                <button class="btn-icon" id="btnRegenerateData" title="Regenerate random values"><i class="fa-solid fa-rotate"></i></button>
+                            </div>
+                            <code id="txtDataSample">[Loading...]</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Visual Chart Canvas -->
+                <div class="playground-display card">
+                    <div class="display-header">
+                        <div class="active-chart-type">
+                            <span class="badge" id="chartTypeBadge">Bar Graph</span>
+                            <h3 id="chartTitle">Dataset Title</h3>
+                        </div>
+                        <div class="chart-legend">
+                            <span class="legend-item"><span class="legend-dot" id="legendDot"></span> Frequency / Count</span>
+                        </div>
+                    </div>
+
+                    <div class="chart-canvas-wrapper">
+                        <!-- Custom SVG Chart generated dynamically -->
+                        <div id="interactiveChartContainer" class="interactive-chart">
+                            <!-- SVG will be injected here -->
+                        </div>
+                    </div>
+
+                    <div class="chart-footer">
+                        <p class="chart-insight-text" id="chartExplanation">
+                            Hover over any bar to inspect specific values.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Machine Learning Applications -->
+        <section class="ml-section section-padding" id="machine-learning">
+            <div class="section-header">
+                <span class="section-tag" id="mlTag">Real World Application</span>
+                <h2 class="section-title" id="mlTitle">Usage in Machine Learning Pipelines</h2>
+                <p class="section-subtitle" id="mlSubtitle">Data scientists rely heavily on both charts. Explore how they drive decisions in feature engineering and model training.</p>
+            </div>
+
+            <!-- Modern Tabs -->
+            <div class="tab-container">
+                <div class="tab-headers">
+                    <button class="tab-btn active" id="tabHistBtn" data-target="tab-hist">
+                        <i class="fa-solid fa-chart-area text-hist"></i> Histograms in ML
+                    </button>
+                    <button class="tab-btn" id="tabBarBtn" data-target="tab-bar">
+                        <i class="fa-solid fa-chart-bar text-bar"></i> Bar Graphs in ML
+                    </button>
+                </div>
+
+                <div class="tab-content-wrapper">
+                    <!-- Histograms Tab -->
+                    <div class="tab-content active" id="tab-hist">
+                        <div class="ml-usecase-grid">
+                            <div class="usecase-card">
+                                <div class="uc-icon"><i class="fa-solid fa-signature"></i></div>
+                                <h4>1. Checking Feature Distribution (Normality)</h4>
+                                <p>Many machine learning algorithms (like Linear Regression, LDA, and neural networks) assume features are normally distributed. Plotting a histogram allows data scientists to check for skewness.</p>
+                                <div class="skew-visuals">
+                                    <div class="skew-box">
+                                        <svg viewBox="0 0 100 50" class="mini-skew-svg">
+                                            <path d="M 10 45 Q 30 5, 50 25 T 90 45" fill="none" stroke="var(--color-hist)" stroke-width="1.5"/>
+                                            <line x1="10" y1="45" x2="90" y2="45" stroke="var(--border-color)"/>
+                                        </svg>
+                                        <span>Right Skewed</span>
+                                    </div>
+                                    <div class="skew-box">
+                                        <svg viewBox="0 0 100 50" class="mini-skew-svg">
+                                            <path d="M 10 45 Q 50 5, 90 45" fill="none" stroke="var(--color-hist)" stroke-width="1.5"/>
+                                            <line x1="10" y1="45" x2="90" y2="45" stroke="var(--border-color)"/>
+                                        </svg>
+                                        <span>Normal</span>
+                                    </div>
+                                </div>
+                                <span class="action-badge">ML Decision: Apply Log / Box-Cox transformations if skewed.</span>
+                            </div>
+
+                            <div class="usecase-card">
+                                <div class="uc-icon"><i class="fa-solid fa-scissors"></i></div>
+                                <h4>2. Identifying Outliers</h4>
+                                <p>Outliers can severely degrade model accuracy. A histogram displays long tails or isolated bars that sit far from the main data concentration, helping developers define filter boundaries.</p>
+                                <span class="action-badge">ML Decision: Set trimming thresholds (e.g. clip features at 1st & 99th percentiles).</span>
+                            </div>
+
+                            <div class="usecase-card">
+                                <div class="uc-icon"><i class="fa-solid fa-equals"></i></div>
+                                <h4>3. Error & Residual Analysis</h4>
+                                <p>When debugging regression models, we plot a histogram of residuals (errors = true values - predicted values). For an unbiased estimator, the residuals should be normally distributed around zero.</p>
+                                <span class="action-badge">ML Decision: If error histogram has two peaks (bimodal), a latent class was missed.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bar Graphs Tab -->
+                    <div class="tab-content" id="tab-bar">
+                        <div class="ml-usecase-grid">
+                            <div class="usecase-card">
+                                <div class="uc-icon"><i class="fa-solid fa-list-check"></i></div>
+                                <h4>1. Class Imbalance Detection</h4>
+                                <p>For classification tasks (e.g., fraud detection), a bar graph plots the frequency of targets. A massive difference in bar heights shows a severe class imbalance, requiring mitigation.</p>
+                                <div class="imbalance-visual">
+                                    <div class="imb-bar bg-bar" style="height: 45px; width: 15px;" title="Majority Class"></div>
+                                    <div class="imb-bar bg-bar" style="height: 8px; width: 15px;" title="Minority Class"></div>
+                                    <span class="imb-text">Majority vs Minority Class</span>
+                                </div>
+                                <span class="action-badge">ML Decision: Implement SMOTE, class-weight adjustment, or downsampling.</span>
+                            </div>
+
+                            <div class="usecase-card">
+                                <div class="uc-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                                <h4>2. Feature Importance Evaluation</h4>
+                                <p>After training a Random Forest or Gradient Boosting model, we plot a horizontal or vertical bar graph of feature importance scores to explain which variables drive predictions.</p>
+                                <span class="action-badge">ML Decision: Drop features with negligible bars to simplify the model.</span>
+                            </div>
+
+                            <div class="usecase-card">
+                                <div class="uc-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                                <h4>3. Model Performance Comparison</h4>
+                                <p>Bar graphs are the standard visual representation used to compare key evaluation metrics (Accuracy, ROC-AUC, F1-Score) across multiple candidate algorithms (e.g., SVM vs. Random Forest vs. XGBoost).</p>
+                                <span class="action-badge">ML Decision: Select the algorithm with the tallest bar while avoiding overfitting.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Quiz Section -->
+        <section class="quiz-section section-padding" id="quiz-section">
+            <div class="section-header">
+                <span class="section-tag" id="quizTag">Knowledge Check</span>
+                <h2 class="section-title" id="quizTitle">Test Your Understanding</h2>
+                <p class="section-subtitle" id="quizSubtitle">Answer these 3 conceptual questions to test your grasp of histograms and bar graphs in machine learning.</p>
+            </div>
+
+            <div class="quiz-container card" id="quizCard">
+                <!-- Quiz Area -->
+                <div id="quizPlayArea">
+                    <div class="quiz-progress-bar">
+                        <div class="progress-fill" id="quizProgressFill" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="quiz-meta">
+                        <span class="quiz-question-num" id="lblQuestionNumber">Question 1 of 3</span>
+                        <span class="quiz-score-counter" id="lblCurrentScore">Score: 0</span>
+                    </div>
+
+                    <h3 class="quiz-question" id="txtQuestionText">Loading Question...</h3>
+
+                    <div class="quiz-options" id="containerQuizOptions">
+                        <!-- Options injected dynamically by script.js -->
+                    </div>
+
+                    <div class="quiz-feedback-box hidden" id="boxQuizFeedback">
+                        <div class="feedback-icon" id="iconQuizFeedback"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="feedback-text-content">
+                            <h4 id="txtFeedbackTitle">Correct!</h4>
+                            <p id="txtFeedbackDesc">Explanation goes here.</p>
+                        </div>
+                    </div>
+
+                    <div class="quiz-actions">
+                        <button class="btn btn-primary hidden" id="btnNextQuestion">Next Question <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Results Screen (Hidden initially) -->
+                <div id="quizResultArea" class="hidden text-center">
+                    <div class="result-celebration">
+                        <i class="fa-solid fa-trophy trophy-icon"></i>
+                    </div>
+                    <h2>Quiz Completed!</h2>
+                    <p class="result-score-desc">You scored <strong id="txtFinalScore">3 out of 3</strong>!</p>
+                    <p id="txtResultVerdict">Outstanding! You have a solid grasp of this visualization concept.</p>
+                    <button class="btn btn-primary" id="btnRestartQuiz"><i class="fa-solid fa-rotate-left"></i> Try Again</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-branding">
+                <a href="#" class="logo">
+                    <span class="logo-icon"><i class="fa-solid fa-chart-simple"></i></span>
+                    <span class="logo-text">DataViz<span class="highlight">.ML</span></span>
+                </a>
+                <p>Making core data science and machine learning concepts simple, interactive, and beautiful.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Jump To</h4>
+                <a href="#hero">Overview</a>
+                <a href="#comparison">Compare</a>
+                <a href="#playground">Playground</a>
+                <a href="#machine-learning">ML Pipelines</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DataViz.ML. Built with standard HTML, CSS, and JS for optimal performance.</p>
+        </div>
+    </footer>
+
+    <!-- Script file -->
+    <script src="script.js"></script>
+</body>
+</html>
